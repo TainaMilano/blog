@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
@@ -14,9 +17,11 @@ import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
 interface Post {
+  uid: string;
   first_publication_date: string | null;
   data: {
     title: string;
+    subtitle: string;
     banner: {
       url: string;
     };
@@ -35,11 +40,27 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
-  console.log('🚀 ~ file: [slug].tsx ~ line 37 ~ Post ~ post', post);
-  const readTime = post.data?.content.reduce((sumTotal, content) => {
+  const router = useRouter();
+
+  const postUpdated: Post = {
+    ...post,
+    first_publication_date: format(
+      new Date(post.first_publication_date),
+      'dd MMM yyyy',
+      {
+        locale: ptBR,
+      }
+    ),
+  };
+
+  const readTime = postUpdated.data?.content.reduce((sumTotal, content) => {
     const textTime = RichText.asText(content.body).split(' ').length;
     return Math.ceil(sumTotal + textTime / 200);
   }, 0);
+
+  if (router.isFallback) {
+    return <p>Carregando...</p>;
+  }
 
   return (
     <>
@@ -49,22 +70,22 @@ export default function Post({ post }: PostProps) {
 
       <img
         className={styles.banner}
-        src={post.data?.banner.url}
-        alt={post.data?.title}
+        src={postUpdated.data?.banner.url}
+        alt={postUpdated.data?.title}
       />
 
       <div className={commonStyles.container}>
         <main className={styles.content}>
-          <h1>{post.data.title}</h1>
+          <h1>{postUpdated.data.title}</h1>
 
           <section>
             <div>
               <FiCalendar color="#BBBBBB" />
-              <time>{post.first_publication_date}</time>
+              <time>{postUpdated.first_publication_date}</time>
             </div>
             <div>
               <FiUser color="#BBBBBB" />
-              <span>{post.data.author}</span>
+              <span>{postUpdated.data.author}</span>
             </div>
             <div>
               <FiClock color="#BBBBBB" />
@@ -72,16 +93,14 @@ export default function Post({ post }: PostProps) {
             </div>
           </section>
 
-          {post.data?.content.map(content => (
+          {postUpdated.data?.content.map(content => (
             <article key={content?.heading}>
               <strong>{content?.heading}</strong>
 
               {content.body.map((body, index) => {
-                const key = index;
-
                 return (
                   <div
-                    key={key}
+                    key={index}
                     dangerouslySetInnerHTML={{ __html: body.text }}
                   />
                 );
@@ -115,19 +134,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const prismic = getPrismicClient({});
   const response = await prismic.getByUID('posts', String(slug), {});
-  console.log(
-    '🚀 ~ file: [slug].tsx ~ line 53 ~ getStaticProps ~ response.data',
-    response.data
-  );
 
   const post = {
-    slug,
-    title: response.data.title,
-    first_publication_date: format(
-      new Date(response.last_publication_date),
-      "d 'de' MMMM 'de' yyyy",
-      { locale: ptBR }
-    ),
+    uid: response.uid,
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
