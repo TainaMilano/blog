@@ -1,1 +1,67 @@
-// TODO
+.postItemContainer {
+  width: 700px;
+  padding: 24px 0;
+
+  h2 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+
+    text-align: justify;
+    letter-spacing: -0.5px;
+
+    color: #f8f8f8;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+
+    text-align: justify;
+
+    color: #d7d7d7;
+    margin-bottom: 24px;
+  }
+
+  section {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+
+      span {
+        font-size: 14px;
+        line-height: 17px;
+
+        color: #bbbbbb;
+      }
+
+      svg {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.morePost {
+  width: 700px;
+
+  button {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: justify;
+    color: #ff57b2;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    margin-top: 40px;
+  }
+}

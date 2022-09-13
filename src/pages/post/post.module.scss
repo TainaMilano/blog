@@ -1,1 +1,65 @@
-// TODO
+.banner {
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  max-width: 720px;
+  padding: 80px 0;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 48px;
+    line-height: 58px;
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+    color: #f8f8f8;
+  }
+
+  section {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+
+      span {
+        font-size: 14px;
+        line-height: 17px;
+
+        color: #bbbbbb;
+      }
+
+      svg {
+        font-size: 20px;
+      }
+    }
+  }
+
+  article {
+    margin-top: 64px;
+
+    strong {
+      font-size: 36px;
+      line-height: 140%;
+      text-align: justify;
+      line-height: 72px;
+      color: #f8f8f8;
+    }
+
+    div {
+      font-size: 18px;
+      line-height: 140%;
+      text-align: justify;
+      margin-top: 24px;
+      color: #d7d7d7;
+    }
+  }
+}
